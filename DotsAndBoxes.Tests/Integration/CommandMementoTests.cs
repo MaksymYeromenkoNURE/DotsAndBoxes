@@ -117,4 +117,71 @@ public class CommandMementoTests
         Assert.False(history.Undo());
         Assert.Equal(0, game.DrawnEdgesCount);
     }
+
+    [Fact]
+    public void SaveAndRestore_AfterClaimedBox_PreservesSnapshot()
+    {
+        var game = new Game(1, 2);
+
+        game.PlayMove(new Edge(0, 0, EdgeOrientation.Horizontal));
+        game.PlayMove(new Edge(0, 0, EdgeOrientation.Vertical));
+        game.PlayMove(new Edge(0, 1, EdgeOrientation.Vertical));
+        game.PlayMove(new Edge(1, 0, EdgeOrientation.Horizontal));
+
+        Assert.Equal(Player.Second, game.GetBoxOwner(new BoxPosition(0, 0)));
+        Assert.Equal(1, game.SecondPlayerScore);
+
+        // The snapshot now contains an already claimed square.
+        var snapshot = game.SaveState();
+
+        game.PlayMove(new Edge(0, 1, EdgeOrientation.Horizontal));
+        game.PlayMove(new Edge(0, 2, EdgeOrientation.Vertical));
+        game.PlayMove(new Edge(1, 1, EdgeOrientation.Horizontal));
+
+        Assert.True(game.IsFinished);
+        Assert.Equal(2, game.SecondPlayerScore);
+
+        game.RestoreState(snapshot);
+
+        Assert.False(game.IsFinished);
+        Assert.Equal(4, game.DrawnEdgesCount);
+        Assert.Equal(Player.Second, game.CurrentPlayer);
+        Assert.Equal(0, game.FirstPlayerScore);
+        Assert.Equal(1, game.SecondPlayerScore);
+        Assert.Equal(Player.Second, game.GetBoxOwner(new BoxPosition(0, 0)));
+        Assert.Null(game.GetBoxOwner(new BoxPosition(0, 1)));
+        Assert.False(game.IsEdgeDrawn(new Edge(0, 1, EdgeOrientation.Horizontal)));
+    }
+
+    [Fact]
+    public void UndoRedo_AfterClaimedBox_PreservesExistingOwner()
+    {
+        var game = new Game(1, 2);
+        var history = new CommandHistory(game);
+
+        history.ExecuteMove(new Edge(0, 0, EdgeOrientation.Horizontal));
+        history.ExecuteMove(new Edge(0, 0, EdgeOrientation.Vertical));
+        history.ExecuteMove(new Edge(0, 1, EdgeOrientation.Vertical));
+        history.ExecuteMove(new Edge(1, 0, EdgeOrientation.Horizontal));
+
+        var nextEdge = new Edge(0, 1, EdgeOrientation.Horizontal);
+        history.ExecuteMove(nextEdge);
+
+        Assert.True(history.Undo());
+
+        Assert.Equal(4, game.DrawnEdgesCount);
+        Assert.Equal(Player.Second, game.CurrentPlayer);
+        Assert.Equal(1, game.SecondPlayerScore);
+        Assert.Equal(Player.Second, game.GetBoxOwner(new BoxPosition(0, 0)));
+        Assert.False(game.IsEdgeDrawn(nextEdge));
+
+        Assert.True(history.Redo());
+
+        Assert.Equal(5, game.DrawnEdgesCount);
+        Assert.Equal(Player.First, game.CurrentPlayer);
+        Assert.Equal(1, game.SecondPlayerScore);
+        Assert.Equal(Player.Second, game.GetBoxOwner(new BoxPosition(0, 0)));
+        Assert.True(game.IsEdgeDrawn(nextEdge));
+    }
+
 }
