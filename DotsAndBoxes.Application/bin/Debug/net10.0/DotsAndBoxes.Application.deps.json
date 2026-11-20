@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "DotsAndBoxes.Application/1.0.0": {
+        "dependencies": {
+          "DotsAndBoxes.Core": "1.0.0"
+        },
+        "runtime": {
+          "DotsAndBoxes.Application.dll": {}
+        }
+      },
+      "DotsAndBoxes.Core/1.0.0": {
+        "runtime": {
+          "DotsAndBoxes.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DotsAndBoxes.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DotsAndBoxes.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

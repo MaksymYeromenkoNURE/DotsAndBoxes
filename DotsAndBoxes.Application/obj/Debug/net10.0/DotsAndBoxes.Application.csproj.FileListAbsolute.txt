@@ -1,0 +1,15 @@
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\bin\Debug\net10.0\DotsAndBoxes.Application.deps.json
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\bin\Debug\net10.0\DotsAndBoxes.Application.dll
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\bin\Debug\net10.0\DotsAndBoxes.Application.pdb
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\bin\Debug\net10.0\DotsAndBoxes.Core.dll
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\bin\Debug\net10.0\DotsAndBoxes.Core.pdb
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\obj\Debug\net10.0\DotsAndBoxes.Application.csproj.AssemblyReference.cache
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\obj\Debug\net10.0\DotsAndBoxes.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\obj\Debug\net10.0\DotsAndBoxes.Application.AssemblyInfoInputs.cache
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\obj\Debug\net10.0\DotsAndBoxes.Application.AssemblyInfo.cs
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\obj\Debug\net10.0\DotsAndBoxes.Application.csproj.CoreCompileInputs.cache
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\obj\Debug\net10.0\DotsAndB.A0618F84.Up2Date
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\obj\Debug\net10.0\DotsAndBoxes.Application.dll
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\obj\Debug\net10.0\refint\DotsAndBoxes.Application.dll
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\obj\Debug\net10.0\DotsAndBoxes.Application.pdb
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Application\obj\Debug\net10.0\ref\DotsAndBoxes.Application.dll

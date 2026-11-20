@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="DotsAndBoxes.Application/DotsAndBoxes.Application.csproj" />
+  <Project Path="DotsAndBoxes.Core/DotsAndBoxes.Core.csproj" />
+  <Project Path="DotsAndBoxes.Tests/DotsAndBoxes.Tests.csproj" />
+  <Project Path="DotsAndBoxes.WinForms/DotsAndBoxes.WinForms.csproj" />
+</Solution>
