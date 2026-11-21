@@ -1,1 +1,10 @@
-.vs
+.vs/
+**/bin/
+**/obj/
+TestResults/
+
+*.coverage
+*.coveragexml
+*.csproj.user
+*.user
+*.suo
