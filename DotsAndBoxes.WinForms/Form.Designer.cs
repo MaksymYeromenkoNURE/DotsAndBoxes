@@ -45,6 +45,7 @@
             lblProgress = new Label();
             groupBox2 = new GroupBox();
             toolTipGame = new ToolTip(components);
+            animationTimer = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)pictureBoxBoard).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numBoardSize).BeginInit();
             groupBox1.SuspendLayout();
@@ -211,6 +212,11 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "Controls";
             // 
+            // animationTimer
+            // 
+            animationTimer.Interval = 16;
+            animationTimer.Tick += animationTimer_Tick;
+            // 
             // Form
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -249,5 +255,6 @@
         private Label lblProgress;
         private ProgressBar progressBarGame;
         private ToolTip toolTipGame;
+        private System.Windows.Forms.Timer animationTimer;
     }
 }

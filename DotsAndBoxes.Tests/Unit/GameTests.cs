@@ -128,4 +128,81 @@ public class GameTests
 
         Assert.Null(game.GetBoxOwner(new BoxPosition(0, 0)));
     }
+
+    [Fact]
+    public void Game_ExposesCorrectEdgesAndTotalCount()
+    {
+        var game = new Game(2, 3);
+
+        var firstEdge = new Edge(
+            0, 0, EdgeOrientation.Horizontal);
+
+        var secondEdge = new Edge(
+            1, 1, EdgeOrientation.Vertical);
+
+        Assert.Equal(17, game.TotalEdges);
+        Assert.Empty(game.DrawnEdges);
+
+        game.PlayMove(firstEdge);
+        game.PlayMove(secondEdge);
+
+        Assert.Equal(17, game.TotalEdges);
+        Assert.Equal(2, game.DrawnEdgesCount);
+        Assert.Equal(2, game.DrawnEdges.Count);
+
+        Assert.Contains(firstEdge, game.DrawnEdges);
+        Assert.Contains(secondEdge, game.DrawnEdges);
+    }
+
+    [Theory]
+    [InlineData(-1, 0)]
+    [InlineData(2, 0)]
+    [InlineData(0, -1)]
+    [InlineData(0, 2)]
+    public void GetBoxOwner_InvalidPosition_ThrowsException(int row, int column)
+    {
+        var game = new Game(2, 2);
+
+        Assert.Throws<ArgumentOutOfRangeException>(() => game.GetBoxOwner(new BoxPosition(row, column)));
+    }
+
+    [Fact]
+    public void RestoreState_Null_ThrowsArgumentNullException()
+    {
+        var game = new Game(2, 2);
+
+        var edge = new Edge(0, 0, EdgeOrientation.Horizontal);
+
+        game.PlayMove(edge);
+
+        var exception = Assert.Throws<ArgumentNullException>(() => game.RestoreState(null!));
+
+        Assert.Equal("state", exception.ParamName);
+        Assert.True(game.IsEdgeDrawn(edge));
+        Assert.Equal(Player.Second, game.CurrentPlayer);
+    }
+
+    [Theory]
+    [InlineData(3, 2)]
+    [InlineData(2, 3)]
+    public void RestoreState_DifferentDimensions_ThrowsAndPreservesGame(
+        int rows,
+        int columns)
+    {
+        var game = new Game(2, 2);
+
+        var edge = new Edge(0, 0, EdgeOrientation.Horizontal);
+
+        game.PlayMove(edge);
+
+        var otherGame = new Game(rows, columns);
+        var snapshot = otherGame.SaveState();
+
+        var exception = Assert.Throws<ArgumentException>(() => game.RestoreState(snapshot));
+
+        Assert.Equal("state", exception.ParamName);
+        Assert.Equal(1, game.DrawnEdgesCount);
+        Assert.True(game.IsEdgeDrawn(edge));
+        Assert.Equal(Player.Second, game.CurrentPlayer);
+    }
 }

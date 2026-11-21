@@ -1,7 +1,7 @@
-﻿
+﻿using DotsAndBoxes.Core.Models;
+using DotsAndBoxes.WinForms.Animations;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using DotsAndBoxes.Core.Models;
 
 namespace DotsAndBoxes.WinForms.Rendering;
 
@@ -14,7 +14,8 @@ public static class BoardRenderer
         Graphics graphics,
         Size canvasSize,
         GameState state,
-        Edge? hoveredEdge)
+        Edge? hoveredEdge,
+        LineAnimation? animation)
     {
         graphics.SmoothingMode = SmoothingMode.AntiAlias;
         graphics.Clear(Color.FromArgb(248, 250, 253));
@@ -27,7 +28,7 @@ public static class BoardRenderer
         DrawBoxes(graphics, geometry, state);
         DrawGuides(graphics, geometry, state);
         DrawHover(graphics, geometry, state, hoveredEdge);
-        DrawEdges(graphics, geometry, state);
+        DrawEdges(graphics, geometry, state, animation);
         DrawDots(graphics, geometry, state);
     }
 
@@ -148,17 +149,64 @@ public static class BoardRenderer
         DrawEdge(graphics, geometry, edge, pen);
     }
 
-    private static void DrawEdges(Graphics graphics, BoardGeometry geometry, GameState state)
+
+    private static void DrawEdges(
+        Graphics graphics,
+        BoardGeometry geometry,
+        GameState state,
+        LineAnimation? animation)
     {
-        using var pen = new Pen(Color.FromArgb(55, 65, 81), 6f);
+        Edge? animatedEdge = null;
+
+        if (animation is not null &&
+            animation.IsActive &&
+            animation.AnimatedEdge is Edge candidate &&
+            state.DrawnEdges.Contains(candidate))
+        {
+            animatedEdge = candidate;
+        }
+
+        using var pen = new Pen(
+            Color.FromArgb(55, 65, 81), 6f);
 
         pen.StartCap = LineCap.Round;
         pen.EndCap = LineCap.Round;
 
         foreach (var edge in state.DrawnEdges)
         {
+            if (animatedEdge is Edge current && edge == current)
+                continue;
+
             DrawEdge(graphics, geometry, edge, pen);
         }
+
+        if (animatedEdge is not Edge activeEdge ||
+            animation is null)
+            return;
+
+        var (start, end) = geometry.GetEdgePoints(activeEdge);
+
+        float progress = animation.Progress;
+        float eased = progress * progress * (3f - 2f * progress);
+
+        var currentPoint = new PointF(
+            start.X + (end.X - start.X) * eased,
+            start.Y + (end.Y - start.Y) * eased);
+
+        graphics.DrawLine(pen, start, currentPoint);
+
+        Color color = animation.PlayedBy == Player.First
+            ? FirstPlayerColor
+            : SecondPlayerColor;
+
+        using var brush = new SolidBrush(color);
+
+        graphics.FillEllipse(
+            brush,
+            currentPoint.X - 5f,
+            currentPoint.Y - 5f,
+            10f,
+            10f);
     }
 
     private static void DrawDots(Graphics graphics, BoardGeometry geometry, GameState state)

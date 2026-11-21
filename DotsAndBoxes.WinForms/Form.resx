@@ -124,7 +124,7 @@
   <data name="btnUndo.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAApgAAAKmCAYAAADpQe4UAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DgAACw4BQL7hQQAAg9VJREFUeF7tnXmoVee5//PrvUkT53me50SNGjVqYhwSjSaaqDFGjUkcosbEmGjU
+        DQAACw0B7QfALAAAg9VJREFUeF7tnXmoVee5//PrvUkT53me50SNGjVqYhwSjSaaqDFGjUkcosbEmGjU
         GBMTYzQmxmhizFBKoZRCoRRKoRTKhVJo/yiFSwmUC6VQCqVwKZRCKZRCKefHd3d/z3183MfxuPdae38+
         8GGtvc4+037f9b7PesebbmoSHn/88e9+9tlnt+brAAAAAADXxNixY9sGDBjQlq8DAAAAAFwT/fv3V3DZ
         NnnyZIJMAAAAALh+/uM//qOtS5culSBz0aJFv81fBwAAAAC4Yt555505N998cyW4dJC5cePGb+T3AQAA
@@ -690,10 +690,13 @@
         QmCC
 </value>
   </data>
+  <metadata name="toolTipGame.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <data name="btnRedo.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAApgAAAKmCAYAAADpQe4UAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DgAACw4BQL7hQQAAhEZJREFUeF7tnXmIlffZv/Pr2yRuM+PojI6jjktcxn1f476vcY8aNcYlRqMm7nvc
+        DQAACw0B7QfALAAAhEZJREFUeF7tnXmIlffZv/Pr2yRuM+PojI6jjktcxn1f476vcY8aNcYlRqMm7nvc
         NS6JS4waSqGUQqEUSqEUSqAU2j9CoZRAKZRCCZRCKYRCKZRCKfPjc95zz3vP7Rkddeac5znnuuDiec6Z
         cZw53+1+vusLLwAAAABAQXn48OE3Vq9e/aP4PgAAAADAM1FTU9PQr1+/hvg+AAAAAMBTM2zYMAWWDdXV
         1QSYAAAAAPB8zJw5808KLtu1a9fwzW9+kwATAAAAAJ6dDRs2fEfBZfv27TM9mC+//HLDpUuXxsfvAwAA
@@ -1260,4 +1263,7 @@
         HdqqbZukXms1vYb5L168OEnff+XKldH3799vF38mAECp8f8BDjl1jmbwbI8AAAAASUVORK5CYII=
 </value>
   </data>
+  <metadata name="animationTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>164, 17</value>
+  </metadata>
 </root>

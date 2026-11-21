@@ -183,4 +183,12 @@ public class CommandMementoTests
         Assert.True(game.IsEdgeDrawn(nextEdge));
     }
 
+    [Fact]
+    public void CommandHistory_NullGame_ThrowsArgumentNullException()
+    {
+        var exception = Assert.Throws<ArgumentNullException>(
+            () => new CommandHistory(null!));
+
+        Assert.Equal("game", exception.ParamName);
+    }
 }

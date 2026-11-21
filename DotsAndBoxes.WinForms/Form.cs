@@ -1,6 +1,7 @@
 using DotsAndBoxes.Application.Controllers;
 using DotsAndBoxes.Application.Views;
 using DotsAndBoxes.Core.Models;
+using DotsAndBoxes.WinForms.Animations;
 using DotsAndBoxes.WinForms.Rendering;
 
 namespace DotsAndBoxes.WinForms;
@@ -12,6 +13,8 @@ public partial class Form : System.Windows.Forms.Form, IGameView
     private GameState? _state;
     private Edge? _hoveredEdge;
 
+    private readonly LineAnimation _lineAnimation = new();
+
     public Form()
     {
         InitializeComponent();
@@ -21,6 +24,15 @@ public partial class Form : System.Windows.Forms.Form, IGameView
 
     public void Render(GameState state)
     {
+        if (_state is not null &&
+            (state.Rows != _state.Rows ||
+             state.Columns != _state.Columns ||
+             state.DrawnEdges.Count <= _state.DrawnEdges.Count))
+        {
+            _lineAnimation.Stop();
+            animationTimer.Stop();
+        }
+
         _state = state;
 
         int totalEdges = (state.Rows + 1) * state.Columns +
@@ -91,19 +103,34 @@ public partial class Form : System.Windows.Forms.Form, IGameView
             e.Graphics,
             pictureBoxBoard.ClientSize,
             _state,
-            _hoveredEdge);
+            _hoveredEdge,
+            _lineAnimation);
     }
 
     private void pictureBoxBoard_MouseClick(object sender, MouseEventArgs e)
     {
-        if (e.Button != MouseButtons.Left)
+        if (e.Button != MouseButtons.Left || _state is null)
             return;
 
         var edge = FindAvailableEdge(e.Location);
 
-        if (edge is Edge selectedEdge)
+        if (edge is not Edge selectedEdge)
+            return;
+
+        var previousState = _state;
+
+        _controller.DrawLine(selectedEdge);
+
+        if (_state is GameState newState &&
+            newState.DrawnEdges.Count == previousState.DrawnEdges.Count + 1 &&
+            newState.DrawnEdges.Contains(selectedEdge))
         {
-            _controller.DrawLine(selectedEdge);
+            _lineAnimation.Start(
+                selectedEdge,
+                previousState.CurrentPlayer);
+
+            animationTimer.Start();
+            pictureBoxBoard.Invalidate();
         }
     }
 
@@ -176,10 +203,12 @@ public partial class Form : System.Windows.Forms.Form, IGameView
         return base.ProcessCmdKey(ref msg, keyData);
     }
 
-
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
+        animationTimer.Stop();
+        _lineAnimation.Stop();
         _controller.Dispose();
+
         base.OnFormClosed(e);
     }
 
@@ -205,4 +234,16 @@ public partial class Form : System.Windows.Forms.Form, IGameView
 
         _controller.NewGame(boardSize, boardSize);
     }
+
+    private void animationTimer_Tick(object sender, EventArgs e)
+    {
+        if (!_lineAnimation.IsActive)
+        {
+            _lineAnimation.Stop();
+            animationTimer.Stop();
+        }
+
+        pictureBoxBoard.Invalidate();
+    }
+
 }

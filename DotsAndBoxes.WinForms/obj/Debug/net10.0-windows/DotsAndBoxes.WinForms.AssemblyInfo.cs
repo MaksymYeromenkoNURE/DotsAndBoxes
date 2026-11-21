@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DotsAndBoxes.WinForms")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c0e1e40169a3a4ee16b2a27f5bd7b095c9ac59f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fd63ec0e570f6a22d3d4df0417890c6bb6acca04")]
 [assembly: System.Reflection.AssemblyProductAttribute("DotsAndBoxes.WinForms")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DotsAndBoxes.WinForms")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

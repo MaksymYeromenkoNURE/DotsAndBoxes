@@ -133,4 +133,43 @@ public class GameControllerTests
         view.Verify(v => v.Render(It.IsAny<GameState>()), Times.Once);
         view.Verify(v => v.ShowError(It.IsAny<string>()), Times.Never);
     }
+
+    [Fact]
+    public void Constructor_NullView_ThrowsArgumentNullException()
+    {
+        var exception = Assert.Throws<ArgumentNullException>(
+            () => new GameController(null!));
+
+        Assert.Equal("view", exception.ParamName);
+    }
+
+    [Theory]
+    [InlineData(0, 4)]
+    [InlineData(4, 0)]
+    public void Constructor_InvalidBoardSize_ThrowsException(
+        int rows,
+        int columns)
+    {
+        var view = new Mock<IGameView>();
+
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => new GameController(view.Object, rows, columns));
+    }
+
+    [Fact]
+    public void DrawLine_InvalidCoordinates_ShowsError()
+    {
+        var view = new Mock<IGameView>();
+
+        using var controller = new GameController(view.Object);
+
+        var invalidEdge = new Edge(-1, 0, EdgeOrientation.Horizontal);
+
+        controller.DrawLine(invalidEdge);
+
+        view.Verify(v => v.ShowError(It.IsAny<string>()), Times.Once);
+        view.Verify(v => v.Render(It.IsAny<GameState>()), Times.Once);
+        view.Verify(v => v.SetHistoryAvailability(true, false), Times.Never);
+        view.Verify(v => v.SetHistoryAvailability(false, false), Times.Once);
+    }
 }
