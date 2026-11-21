@@ -196,9 +196,6 @@ public partial class Form : System.Windows.Forms.Form, IGameView
     private void pictureBoxBoard_MouseLeave(object sender, EventArgs e)
     {
         _hoveredEdge = null;
-        pictureBoxBoard.Invalidate();
-
-        _hoveredEdge = null;
         _hoverAnimation.Stop();
 
         UpdateAnimationTimer();
