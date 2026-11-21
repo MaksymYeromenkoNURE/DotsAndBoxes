@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using DotsAndBoxes.Core.Models;
 
@@ -6,6 +7,9 @@ namespace DotsAndBoxes.WinForms.Rendering;
 
 public static class BoardRenderer
 {
+    private static readonly Color FirstPlayerColor = Color.FromArgb(37, 99, 235);
+    private static readonly Color SecondPlayerColor = Color.FromArgb(234, 88, 12);
+
     public static void Draw(
         Graphics graphics,
         Size canvasSize,
@@ -20,41 +24,88 @@ public static class BoardRenderer
             state.Columns,
             canvasSize);
 
-        using var firstPlayerBrush = new SolidBrush(Color.FromArgb(205, 228, 255));
-        using var secondPlayerBrush = new SolidBrush(Color.FromArgb(255, 224, 196));
+        DrawBoxes(graphics, geometry, state);
+        DrawGuides(graphics, geometry, state);
+        DrawHover(graphics, geometry, state, hoveredEdge);
+        DrawEdges(graphics, geometry, state);
+        DrawDots(graphics, geometry, state);
+    }
+
+    private static void DrawBoxes(Graphics graphics, BoardGeometry geometry, GameState state)
+    {
+        using var firstBrush = new SolidBrush(Color.FromArgb(219, 234, 254));
+        using var secondBrush = new SolidBrush(Color.FromArgb(255, 237, 213));
+
+        using var firstTextBrush = new SolidBrush(FirstPlayerColor);
+        using var secondTextBrush = new SolidBrush(SecondPlayerColor);
+
+        using var firstPen = new Pen(FirstPlayerColor, 2f);
+        using var secondPen = new Pen(SecondPlayerColor, 2f);
+
+        float fontSize = Math.Clamp(geometry.CellSize * 0.3f, 12f, 34f);
+
+        using var font = new Font(
+            FontFamily.GenericSansSerif,
+            fontSize,
+            FontStyle.Bold,
+            GraphicsUnit.Pixel);
+
+        using var format = new StringFormat
+        {
+            Alignment = StringAlignment.Center,
+            LineAlignment = StringAlignment.Center
+        };
 
         foreach (var item in state.BoxOwners)
         {
-            var topLeft = geometry.GetDot(
-                item.Key.Row,
-                item.Key.Column);
+            var point = geometry.GetDot(item.Key.Row, item.Key.Column);
 
-            const float inset = 7f;
+            float inset = Math.Clamp(geometry.CellSize * 0.09f, 3f, 9f);
 
-            var brush = item.Value == Player.First
-                ? firstPlayerBrush
-                : secondPlayerBrush;
+            var bounds = new RectangleF(
+                point.X + inset,
+                point.Y + inset,
+                geometry.CellSize - 2 * inset,
+                geometry.CellSize - 2 * inset);
+
+            bool isFirst = item.Value == Player.First;
 
             graphics.FillRectangle(
-                brush,
-                topLeft.X + inset,
-                topLeft.Y + inset,
-                Math.Max(1f, geometry.CellSize - 2 * inset),
-                Math.Max(1f, geometry.CellSize - 2 * inset));
+                isFirst ? firstBrush : secondBrush,
+                bounds);
+
+            graphics.DrawRectangle(
+                isFirst ? firstPen : secondPen,
+                bounds.X,
+                bounds.Y,
+                bounds.Width,
+                bounds.Height);
+
+            graphics.DrawString(
+                isFirst ? "1" : "2",
+                font,
+                isFirst ? firstTextBrush : secondTextBrush,
+                bounds,
+                format);
         }
+    }
 
-        using var guidePen = new Pen(Color.FromArgb(214, 222, 233), 2f);
+    private static void DrawGuides(Graphics graphics, BoardGeometry geometry, GameState state)
+    {
+        using var pen = new Pen(Color.FromArgb(205, 215, 228), 1.8f);
 
-        guidePen.DashStyle = DashStyle.Dot;
+        pen.DashStyle = DashStyle.Dot;
 
         for (int row = 0; row <= state.Rows; row++)
         {
             for (int column = 0; column < state.Columns; column++)
             {
-                var edge = new Edge(
-                    row, column, EdgeOrientation.Horizontal);
-
-                DrawEdge(graphics, geometry, edge, guidePen);
+                DrawEdge(
+                    graphics,
+                    geometry,
+                    new Edge(
+                        row, column, EdgeOrientation.Horizontal),
+                    pen);
             }
         }
 
@@ -62,37 +113,59 @@ public static class BoardRenderer
         {
             for (int column = 0; column <= state.Columns; column++)
             {
-                var edge = new Edge(
-                    row, column, EdgeOrientation.Vertical);
-
-                DrawEdge(graphics, geometry, edge, guidePen);
+                DrawEdge(
+                    graphics,
+                    geometry,
+                    new Edge(
+                        row, column, EdgeOrientation.Vertical),
+                    pen);
             }
         }
+    }
 
-        if (hoveredEdge is Edge hovered &&
-            !state.IsFinished &&
-            !state.DrawnEdges.Contains(hovered))
-        {
-            using var hoverPen = new Pen(
-                Color.FromArgb(80, 145, 220), 5f);
+    private static void DrawHover(
+        Graphics graphics,
+        BoardGeometry geometry,
+        GameState state,
+        Edge? hoveredEdge)
+    {
+        if (hoveredEdge is not Edge edge ||
+            state.IsFinished ||
+            state.DrawnEdges.Contains(edge))
+            return;
 
-            hoverPen.StartCap = LineCap.Round;
-            hoverPen.EndCap = LineCap.Round;
+        Color color = state.CurrentPlayer == Player.First
+            ? FirstPlayerColor
+            : SecondPlayerColor;
 
-            DrawEdge(graphics, geometry, hovered, hoverPen);
-        }
+        float width = Math.Clamp(geometry.CellSize * 0.075f, 4f, 7f);
 
-        using var edgePen = new Pen(Color.FromArgb(49, 72, 112), 6f);
+        using var pen = new Pen(Color.FromArgb(190, color), width);
 
-        edgePen.StartCap = LineCap.Round;
-        edgePen.EndCap = LineCap.Round;
+        pen.StartCap = LineCap.Round;
+        pen.EndCap = LineCap.Round;
+
+        DrawEdge(graphics, geometry, edge, pen);
+    }
+
+    private static void DrawEdges(Graphics graphics, BoardGeometry geometry, GameState state)
+    {
+        using var pen = new Pen(Color.FromArgb(55, 65, 81), 6f);
+
+        pen.StartCap = LineCap.Round;
+        pen.EndCap = LineCap.Round;
 
         foreach (var edge in state.DrawnEdges)
         {
-            DrawEdge(graphics, geometry, edge, edgePen);
+            DrawEdge(graphics, geometry, edge, pen);
         }
+    }
 
-        using var dotBrush = new SolidBrush(Color.FromArgb(35, 52, 83));
+    private static void DrawDots(Graphics graphics, BoardGeometry geometry, GameState state)
+    {
+        using var brush = new SolidBrush(Color.FromArgb(31, 41, 55));
+
+        float radius = Math.Clamp(geometry.CellSize * 0.055f, 4f, 6f);
 
         for (int row = 0; row <= state.Rows; row++)
         {
@@ -101,11 +174,11 @@ public static class BoardRenderer
                 var point = geometry.GetDot(row, column);
 
                 graphics.FillEllipse(
-                    dotBrush,
-                    point.X - 5,
-                    point.Y - 5,
-                    10,
-                    10);
+                    brush,
+                    point.X - radius,
+                    point.Y - radius,
+                    radius * 2,
+                    radius * 2);
             }
         }
     }

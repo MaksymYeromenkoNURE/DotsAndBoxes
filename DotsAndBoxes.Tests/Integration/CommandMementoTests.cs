@@ -131,7 +131,6 @@ public class CommandMementoTests
         Assert.Equal(Player.Second, game.GetBoxOwner(new BoxPosition(0, 0)));
         Assert.Equal(1, game.SecondPlayerScore);
 
-        // The snapshot now contains an already claimed square.
         var snapshot = game.SaveState();
 
         game.PlayMove(new Edge(0, 1, EdgeOrientation.Horizontal));

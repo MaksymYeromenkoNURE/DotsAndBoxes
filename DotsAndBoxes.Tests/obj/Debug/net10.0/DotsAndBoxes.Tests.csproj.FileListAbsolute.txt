@@ -105,3 +105,4 @@ C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування 
 C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Tests\obj\Debug\net10.0\DotsAndBoxes.Tests.pdb
 C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Tests\obj\Debug\net10.0\DotsAndBoxes.Tests.genruntimeconfig.cache
 C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Tests\obj\Debug\net10.0\ref\DotsAndBoxes.Tests.dll
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.Tests\obj\Debug\net10.0\DotsAndBoxes.Tests.sourcelink.json

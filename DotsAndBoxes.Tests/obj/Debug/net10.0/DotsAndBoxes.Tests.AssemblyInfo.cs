@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DotsAndBoxes.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b2cdc5eaf5f3ef12996866565cfd4683ed5c71ce")]
 [assembly: System.Reflection.AssemblyProductAttribute("DotsAndBoxes.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DotsAndBoxes.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

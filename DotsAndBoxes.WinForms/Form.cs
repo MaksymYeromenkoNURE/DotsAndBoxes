@@ -23,8 +23,25 @@ public partial class Form : System.Windows.Forms.Form, IGameView
     {
         _state = state;
 
+        int totalEdges = (state.Rows + 1) * state.Columns +
+            state.Rows * (state.Columns + 1);
+
+        int drawnEdges = state.DrawnEdges.Count;
+
+        lblProgress.Text = $"Lines: {drawnEdges} / {totalEdges}";
+
+        progressBarGame.Maximum = totalEdges;
+        progressBarGame.Value = drawnEdges;
+
         lblFirstScore.Text = $"Player 1: {state.FirstPlayerScore}";
         lblSecondScore.Text = $"Player 2: {state.SecondPlayerScore}";
+
+        lblFirstScore.ForeColor = Color.FromArgb(37, 99, 235);
+        lblSecondScore.ForeColor = Color.FromArgb(234, 88, 12);
+
+        lblTurn.ForeColor = state.CurrentPlayer == Player.First
+            ? Color.FromArgb(37, 99, 235)
+            : Color.FromArgb(234, 88, 12);
 
         if (state.IsFinished)
         {
@@ -128,17 +145,64 @@ public partial class Form : System.Windows.Forms.Form, IGameView
 
     private void btnNewGame_Click(object sender, EventArgs e)
     {
-        _hoveredEdge = null;
-        _controller.NewGame();
+        StartNewGame();
     }
 
     private void btnUndo_Click(object sender, EventArgs e) => _controller.Undo();
 
     private void btnRedo_Click(object sender, EventArgs e) => _controller.Redo();
 
+
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+    {
+        if (keyData == (Keys.Control | Keys.Z))
+        {
+            _controller.Undo();
+            return true;
+        }
+
+        if (keyData == (Keys.Control | Keys.Y))
+        {
+            _controller.Redo();
+            return true;
+        }
+
+        if (keyData == (Keys.Control | Keys.N))
+        {
+            StartNewGame();
+            return true;
+        }
+
+        return base.ProcessCmdKey(ref msg, keyData);
+    }
+
+
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
         _controller.Dispose();
         base.OnFormClosed(e);
+    }
+
+    private void StartNewGame()
+    {
+        if (_state != null && !_state.IsFinished && _state.DrawnEdges.Count > 0)
+        {
+            var result = MessageBox.Show(
+                this,
+                "Are you sure you want to start a new game?",
+                "New Game",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2);
+
+            if (result != DialogResult.Yes)
+                return;
+        }
+
+        _hoveredEdge = null;
+
+        int boardSize = (int)numBoardSize.Value;
+
+        _controller.NewGame(boardSize, boardSize);
     }
 }
