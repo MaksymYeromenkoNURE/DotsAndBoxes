@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using DotsAndBoxes.Core.Models;
+﻿using DotsAndBoxes.Core.Models;
 
 namespace DotsAndBoxes.WinForms.Rendering;
 

@@ -2,7 +2,6 @@
 using DotsAndBoxes.Core.Patterns.Command;
 using DotsAndBoxes.Core.Patterns.Observer;
 using Moq;
-using Xunit;
 
 namespace DotsAndBoxes.Tests.Integration;
 

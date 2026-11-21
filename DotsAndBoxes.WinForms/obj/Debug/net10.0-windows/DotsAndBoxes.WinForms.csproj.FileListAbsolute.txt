@@ -22,4 +22,12 @@ C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування 
 C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\obj\Debug\net10.0-windows\ref\DotsAndBoxes.WinForms.dll
 C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\obj\Debug\net10.0-windows\DotsAndBoxes.WinForms.Form.resources
 C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\obj\Debug\net10.0-windows\DotsAndBoxes.WinForms.sourcelink.json
-C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\obj\Debug\net10.0-windows\DotsAndBoxes.WinForms.Properties.Resources.resources
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\bin\Debug\net10.0-windows\Resources\Audio\box-capture.mp3
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\bin\Debug\net10.0-windows\Resources\Audio\game-finish.mp3
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\bin\Debug\net10.0-windows\Resources\Audio\line-draw.mp3
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\bin\Debug\net10.0-windows\NAudio.dll
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\bin\Debug\net10.0-windows\NAudio.Core.dll
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\bin\Debug\net10.0-windows\NAudio.Midi.dll
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\bin\Debug\net10.0-windows\NAudio.Wasapi.dll
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\bin\Debug\net10.0-windows\NAudio.WinMM.dll
+C:\Users\maxzs\OneDrive\Документи\2026-2027\Програмування C#\DotsAndBoxes\DotsAndBoxes.WinForms\bin\Debug\net10.0-windows\System.Numerics.Tensors.dll

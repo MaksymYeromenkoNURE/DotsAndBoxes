@@ -3,6 +3,7 @@ using DotsAndBoxes.Application.Views;
 using DotsAndBoxes.Core.Models;
 using DotsAndBoxes.WinForms.Animations;
 using DotsAndBoxes.WinForms.Rendering;
+using DotsAndBoxes.WinForms.Services;
 
 namespace DotsAndBoxes.WinForms;
 
@@ -17,10 +18,13 @@ public partial class Form : System.Windows.Forms.Form, IGameView
     private readonly HoverAnimation _hoverAnimation = new();
     private readonly CaptureAnimation _captureAnimation = new();
 
+    private readonly SoundManager _soundManager = new();
+    private bool _finishSoundPending;
+
     public Form()
     {
         InitializeComponent();
-
+        _soundManager.Enabled = chkSoundEnabled.Checked;
         _controller = new GameController(this);
     }
 
@@ -149,6 +153,9 @@ public partial class Form : System.Windows.Forms.Form, IGameView
             selectedEdge,
             previousState.CurrentPlayer);
 
+        _soundManager.PlayLine();
+        _finishSoundPending = newState.IsFinished;
+
         UpdateAnimationTimer();
         pictureBoxBoard.Invalidate();
     }
@@ -247,6 +254,8 @@ public partial class Form : System.Windows.Forms.Form, IGameView
         _captureAnimation.Stop();
         _controller.Dispose();
 
+        _soundManager.Dispose();
+
         base.OnFormClosed(e);
     }
 
@@ -280,13 +289,29 @@ public partial class Form : System.Windows.Forms.Form, IGameView
             !_lineAnimation.IsActive)
         {
             _lineAnimation.Stop();
-            _captureAnimation.Start();
+
+            if (_captureAnimation.IsPending)
+            {
+                _captureAnimation.Start();
+                _soundManager.PlayCapture();
+            }
+            else if (_finishSoundPending)
+            {
+                _soundManager.PlayFinish();
+                _finishSoundPending = false;
+            }
         }
 
         if (_captureAnimation.HasStarted &&
             !_captureAnimation.IsActive)
         {
             _captureAnimation.Stop();
+
+            if (_finishSoundPending)
+            {
+                _soundManager.PlayFinish();
+                _finishSoundPending = false;
+            }
         }
 
         UpdateAnimationTimer();
@@ -317,5 +342,11 @@ public partial class Form : System.Windows.Forms.Form, IGameView
 
         animationTimer.Stop();
         pictureBoxBoard.Invalidate();
+
+        _finishSoundPending = false;
+        _soundManager.StopAll();
     }
+
+    private void chkSoundEnabled_CheckedChanged(object sender, EventArgs e)
+        => _soundManager.Enabled = chkSoundEnabled.Checked;
 }

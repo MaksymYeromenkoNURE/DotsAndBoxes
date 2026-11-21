@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DotsAndBoxes.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+11b8af6024473155bb0ea5aa039df93a4c1b5c08")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bad2a2705f4b9f8775b18b95537b858d3b9c8a63")]
 [assembly: System.Reflection.AssemblyProductAttribute("DotsAndBoxes.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DotsAndBoxes.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

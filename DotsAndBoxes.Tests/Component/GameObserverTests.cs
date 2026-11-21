@@ -1,7 +1,6 @@
 ﻿using DotsAndBoxes.Core.Models;
 using DotsAndBoxes.Core.Patterns.Observer;
 using Moq;
-using Xunit;
 
 namespace DotsAndBoxes.Tests.Component;
 

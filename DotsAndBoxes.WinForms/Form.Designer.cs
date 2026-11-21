@@ -46,6 +46,7 @@
             groupBox2 = new GroupBox();
             toolTipGame = new ToolTip(components);
             animationTimer = new System.Windows.Forms.Timer(components);
+            chkSoundEnabled = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)pictureBoxBoard).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numBoardSize).BeginInit();
             groupBox1.SuspendLayout();
@@ -109,7 +110,7 @@
             // btnNewGame
             // 
             btnNewGame.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnNewGame.Location = new Point(115, 119);
+            btnNewGame.Location = new Point(115, 79);
             btnNewGame.Name = "btnNewGame";
             btnNewGame.Size = new Size(94, 30);
             btnNewGame.TabIndex = 5;
@@ -123,7 +124,7 @@
             btnUndo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnUndo.BackgroundImage = (Image)resources.GetObject("btnUndo.BackgroundImage");
             btnUndo.BackgroundImageLayout = ImageLayout.Zoom;
-            btnUndo.Location = new Point(79, 119);
+            btnUndo.Location = new Point(79, 79);
             btnUndo.Name = "btnUndo";
             btnUndo.Size = new Size(30, 30);
             btnUndo.TabIndex = 6;
@@ -136,7 +137,7 @@
             btnRedo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRedo.BackgroundImage = (Image)resources.GetObject("btnRedo.BackgroundImage");
             btnRedo.BackgroundImageLayout = ImageLayout.Zoom;
-            btnRedo.Location = new Point(215, 119);
+            btnRedo.Location = new Point(215, 79);
             btnRedo.Name = "btnRedo";
             btnRedo.Size = new Size(30, 30);
             btnRedo.TabIndex = 7;
@@ -147,7 +148,7 @@
             // lblBoardSize
             // 
             lblBoardSize.AutoSize = true;
-            lblBoardSize.Location = new Point(79, 63);
+            lblBoardSize.Location = new Point(79, 23);
             lblBoardSize.Name = "lblBoardSize";
             lblBoardSize.Size = new Size(81, 20);
             lblBoardSize.TabIndex = 8;
@@ -155,7 +156,7 @@
             // 
             // numBoardSize
             // 
-            numBoardSize.Location = new Point(79, 86);
+            numBoardSize.Location = new Point(79, 46);
             numBoardSize.Maximum = new decimal(new int[] { 8, 0, 0, 0 });
             numBoardSize.Minimum = new decimal(new int[] { 3, 0, 0, 0 });
             numBoardSize.Name = "numBoardSize";
@@ -200,6 +201,7 @@
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(chkSoundEnabled);
             groupBox2.Controls.Add(numBoardSize);
             groupBox2.Controls.Add(btnNewGame);
             groupBox2.Controls.Add(btnUndo);
@@ -216,6 +218,19 @@
             // 
             animationTimer.Interval = 16;
             animationTimer.Tick += animationTimer_Tick;
+            // 
+            // chkSoundEnabled
+            // 
+            chkSoundEnabled.AutoSize = true;
+            chkSoundEnabled.Checked = true;
+            chkSoundEnabled.CheckState = CheckState.Checked;
+            chkSoundEnabled.Location = new Point(97, 115);
+            chkSoundEnabled.Name = "chkSoundEnabled";
+            chkSoundEnabled.Size = new Size(131, 24);
+            chkSoundEnabled.TabIndex = 11;
+            chkSoundEnabled.Text = "Sound enabled";
+            chkSoundEnabled.UseVisualStyleBackColor = true;
+            chkSoundEnabled.CheckedChanged += chkSoundEnabled_CheckedChanged;
             // 
             // Form
             // 
@@ -256,5 +271,6 @@
         private ProgressBar progressBarGame;
         private ToolTip toolTipGame;
         private System.Windows.Forms.Timer animationTimer;
+        private CheckBox chkSoundEnabled;
     }
 }

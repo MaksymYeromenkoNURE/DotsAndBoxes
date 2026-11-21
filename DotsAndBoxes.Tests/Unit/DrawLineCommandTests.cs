@@ -1,6 +1,5 @@
 using DotsAndBoxes.Core.Models;
 using DotsAndBoxes.Core.Patterns.Command;
-using Xunit;
 
 namespace DotsAndBoxes.Tests.Unit;
 

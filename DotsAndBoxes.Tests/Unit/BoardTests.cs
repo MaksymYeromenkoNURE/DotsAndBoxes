@@ -1,5 +1,4 @@
 ﻿using DotsAndBoxes.Core.Models;
-using Xunit;
 
 namespace DotsAndBoxes.Tests.Unit;
 
@@ -20,8 +19,7 @@ public class BoardTests
     public void DrawEdge_AddsEdgeToBoard()
     {
         var board = new Board(2, 2);
-        var edge = new Edge(
-            0, 0, EdgeOrientation.Horizontal);
+        var edge = new Edge(0, 0, EdgeOrientation.Horizontal);
 
         board.DrawEdge(edge);
 
@@ -33,8 +31,7 @@ public class BoardTests
     public void DrawEdge_ThrowsWhenEdgeAlreadyExists()
     {
         var board = new Board(2, 2);
-        var edge = new Edge(
-            0, 0, EdgeOrientation.Horizontal);
+        var edge = new Edge(0, 0, EdgeOrientation.Horizontal);
 
         board.DrawEdge(edge);
 
@@ -46,8 +43,7 @@ public class BoardTests
     public void DrawEdge_ThrowsForInvalidPosition()
     {
         var board = new Board(2, 2);
-        var edge = new Edge(
-            -1, 0, EdgeOrientation.Horizontal);
+        var edge = new Edge(-1, 0, EdgeOrientation.Horizontal);
 
         Assert.Throws<ArgumentOutOfRangeException>(
             () => board.DrawEdge(edge));

@@ -2,7 +2,6 @@
 using DotsAndBoxes.Application.Views;
 using DotsAndBoxes.Core.Models;
 using Moq;
-using Xunit;
 
 namespace DotsAndBoxes.Tests.Component;
 

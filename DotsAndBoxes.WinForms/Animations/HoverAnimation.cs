@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using DotsAndBoxes.Core.Models;
+﻿using DotsAndBoxes.Core.Models;
+using System.Diagnostics;
 
 namespace DotsAndBoxes.WinForms.Animations;
 

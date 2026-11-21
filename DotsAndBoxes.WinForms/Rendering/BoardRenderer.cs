@@ -1,6 +1,5 @@
 ﻿using DotsAndBoxes.Core.Models;
 using DotsAndBoxes.WinForms.Animations;
-using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace DotsAndBoxes.WinForms.Rendering;
