@@ -14,6 +14,8 @@ public partial class Form : System.Windows.Forms.Form, IGameView
     private Edge? _hoveredEdge;
 
     private readonly LineAnimation _lineAnimation = new();
+    private readonly HoverAnimation _hoverAnimation = new();
+    private readonly CaptureAnimation _captureAnimation = new();
 
     public Form()
     {
@@ -30,6 +32,9 @@ public partial class Form : System.Windows.Forms.Form, IGameView
              state.DrawnEdges.Count <= _state.DrawnEdges.Count))
         {
             _lineAnimation.Stop();
+            _hoverAnimation.Stop();
+            _captureAnimation.Stop();
+            _hoveredEdge = null;
             animationTimer.Stop();
         }
 
@@ -104,12 +109,17 @@ public partial class Form : System.Windows.Forms.Form, IGameView
             pictureBoxBoard.ClientSize,
             _state,
             _hoveredEdge,
-            _lineAnimation);
+            _lineAnimation,
+            _hoverAnimation,
+            _captureAnimation);
     }
 
     private void pictureBoxBoard_MouseClick(object sender, MouseEventArgs e)
     {
-        if (e.Button != MouseButtons.Left || _state is null)
+        if (e.Button != MouseButtons.Left ||
+            _state is null ||
+            _lineAnimation.IsActive ||
+            _captureAnimation.IsBusy)
             return;
 
         var edge = FindAvailableEdge(e.Location);
@@ -121,28 +131,40 @@ public partial class Form : System.Windows.Forms.Form, IGameView
 
         _controller.DrawLine(selectedEdge);
 
-        if (_state is GameState newState &&
-            newState.DrawnEdges.Count == previousState.DrawnEdges.Count + 1 &&
-            newState.DrawnEdges.Contains(selectedEdge))
-        {
-            _lineAnimation.Start(
-                selectedEdge,
-                previousState.CurrentPlayer);
+        if (_state is not GameState newState ||
+            newState.DrawnEdges.Count != previousState.DrawnEdges.Count + 1 ||
+            !newState.DrawnEdges.Contains(selectedEdge))
+            return;
 
-            animationTimer.Start();
-            pictureBoxBoard.Invalidate();
-        }
+        var capturedBoxes = newState.BoxOwners
+            .Where(item => !previousState.BoxOwners.ContainsKey(item.Key))
+            .ToArray();
+
+        _captureAnimation.Prepare(capturedBoxes);
+
+        _hoveredEdge = null;
+        _hoverAnimation.Stop();
+
+        _lineAnimation.Start(
+            selectedEdge,
+            previousState.CurrentPlayer);
+
+        UpdateAnimationTimer();
+        pictureBoxBoard.Invalidate();
     }
 
     private void pictureBoxBoard_MouseMove(object sender, MouseEventArgs e)
     {
         var nextHoveredEdge = FindAvailableEdge(e.Location);
 
-        if (_hoveredEdge != nextHoveredEdge)
-        {
-            _hoveredEdge = nextHoveredEdge;
-            pictureBoxBoard.Invalidate();
-        }
+        if (_hoveredEdge == nextHoveredEdge)
+            return;
+
+        _hoveredEdge = nextHoveredEdge;
+        _hoverAnimation.SetEdge(nextHoveredEdge);
+
+        UpdateAnimationTimer();
+        pictureBoxBoard.Invalidate();
     }
 
     private Edge? FindAvailableEdge(Point position)
@@ -168,29 +190,43 @@ public partial class Form : System.Windows.Forms.Form, IGameView
     {
         _hoveredEdge = null;
         pictureBoxBoard.Invalidate();
+
+        _hoveredEdge = null;
+        _hoverAnimation.Stop();
+
+        UpdateAnimationTimer();
+        pictureBoxBoard.Invalidate();
     }
 
-    private void btnNewGame_Click(object sender, EventArgs e)
+    private void btnNewGame_Click(object sender, EventArgs e) => StartNewGame();
+
+    private void btnUndo_Click(object sender, EventArgs e) => UndoMove();
+
+    private void btnRedo_Click(object sender, EventArgs e) => RedoMove();
+
+    private void UndoMove()
     {
-        StartNewGame();
+        StopVisualEffects();
+        _controller.Undo();
     }
 
-    private void btnUndo_Click(object sender, EventArgs e) => _controller.Undo();
-
-    private void btnRedo_Click(object sender, EventArgs e) => _controller.Redo();
-
+    private void RedoMove()
+    {
+        StopVisualEffects();
+        _controller.Redo();
+    }
 
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
     {
         if (keyData == (Keys.Control | Keys.Z))
         {
-            _controller.Undo();
+            UndoMove();
             return true;
         }
 
         if (keyData == (Keys.Control | Keys.Y))
         {
-            _controller.Redo();
+            RedoMove();
             return true;
         }
 
@@ -207,6 +243,8 @@ public partial class Form : System.Windows.Forms.Form, IGameView
     {
         animationTimer.Stop();
         _lineAnimation.Stop();
+        _hoverAnimation.Stop();
+        _captureAnimation.Stop();
         _controller.Dispose();
 
         base.OnFormClosed(e);
@@ -229,6 +267,7 @@ public partial class Form : System.Windows.Forms.Form, IGameView
         }
 
         _hoveredEdge = null;
+        StopVisualEffects();
 
         int boardSize = (int)numBoardSize.Value;
 
@@ -237,13 +276,46 @@ public partial class Form : System.Windows.Forms.Form, IGameView
 
     private void animationTimer_Tick(object sender, EventArgs e)
     {
-        if (!_lineAnimation.IsActive)
+        if (_lineAnimation.AnimatedEdge is not null &&
+            !_lineAnimation.IsActive)
         {
             _lineAnimation.Stop();
-            animationTimer.Stop();
+            _captureAnimation.Start();
         }
 
+        if (_captureAnimation.HasStarted &&
+            !_captureAnimation.IsActive)
+        {
+            _captureAnimation.Stop();
+        }
+
+        UpdateAnimationTimer();
         pictureBoxBoard.Invalidate();
     }
 
+    private void UpdateAnimationTimer()
+    {
+        if (_lineAnimation.IsActive ||
+            _hoverAnimation.IsActive ||
+            _captureAnimation.IsBusy)
+        {
+            animationTimer.Start();
+        }
+        else
+        {
+            animationTimer.Stop();
+        }
+    }
+
+    private void StopVisualEffects()
+    {
+        _lineAnimation.Stop();
+        _hoverAnimation.Stop();
+        _captureAnimation.Stop();
+
+        _hoveredEdge = null;
+
+        animationTimer.Stop();
+        pictureBoxBoard.Invalidate();
+    }
 }
